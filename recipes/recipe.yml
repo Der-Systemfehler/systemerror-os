@@ -3,43 +3,91 @@
 # image will be published to ghcr.io/<user>/<name>
 name: systemerror-os
 # description will be included in the image's metadata
-description: This is my personal OS image.
+description: "Personal OS image: Bluefin DX base with niri + noctalia, custom daily apps"
 
 # the base image to build on top of (FROM) and the version tag to use
-base-image: ghcr.io/ublue-os/silverblue-main
-image-version: 42 # latest is also supported if you want new updates ASAP
+base-image: ghcr.io/ublue-os/bluefin-dx
+image-version: 44 # tracks the latest Bluefin release (Fedora 44)
 
 # module configuration, executed in order
-# you can include multiple instances of the same module
 modules:
   - type: files
     files:
       - source: system
-        destination: / # copies files/system/* (* means everything inside it) into your image's root folder /
+        destination: /
 
   - type: dnf
-    repos:
-      copr:
-        - atim/starship
     install:
       packages:
-        - micro
+        # Window manager & desktop shell
+        - niri
+        - noctalia
+
+        # File management
+        - nemo
+        - nemo-fileroller
+
+        # Documents
+        - evince
+
+        # Audio
+        - pavucontrol
+
+        # Network
+        - network-manager-applet
+
+        # System utilities
+        - polkit-gnome
+        - gnome-disk-utility
+
+        # Shell
         - starship
     remove:
       packages:
-        # example: removing firefox (in favor of the flatpak)
-        # "firefox" is the main package, "firefox-langpacks" is a dependency
+        # Core GNOME shell (replaced by niri + noctalia)
+        - gnome-shell
+        - gnome-session
+        - gnome-control-center
+        - gnome-software
+
+        # GNOME apps → replaced alternatives
+        - nautilus           # → nemo
+        - gnome-text-editor  # → neovim (already in bluefin-dx)
+        - gnome-tour
+        - gnome-calculator   # → noctalia launcher has built-in calc
+        - gnome-characters
+        - gnome-weather
+        - gnome-maps
+        - gnome-calendar
+        - gnome-clocks
+        - gnome-contacts
+        - gnome-connections
+        - epiphany           # → firefox flatpak
+        - gnome-user-docs
+        - totem              # video player
+        - gnome-photos
+        - gnome-music
+        - loupe              # → flatpak version
+
+        # Browser system packages
         - firefox
-        - firefox-langpacks # also remove firefox dependency (not required for all packages, this is a special case)
+        - firefox-langpacks  # → firefox flatpak
+
+        # GNOME Shell extensions (not needed without gnome-shell)
+        - gnome-shell-extension-apps-menu
+        - gnome-shell-extension-background-logo
+        - gnome-shell-extension-launchpad
+        - gnome-shell-extension-window-list
+        - gnome-shell-extension-places-menu
+        - gnome-shell-extension-dash-to-dock
 
   - type: default-flatpaks
     configurations:
-      - notify: true # Send notification after install/uninstall is finished (true/false)
+      - notify: true
         scope: system
-        # If no repo information is specified, Flathub will be used by default
-        install: # system flatpaks we want all users to have and not remove
+        install:
           - org.mozilla.firefox
           - org.gnome.Loupe
-      - scope: user # Also add Flathub user repo, but no user packages
+      - scope: user
 
-  - type: signing # this sets up the proper policy & signing files for signed images to work fully
+  - type: signing
