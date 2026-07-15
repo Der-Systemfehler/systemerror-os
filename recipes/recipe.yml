@@ -17,6 +17,9 @@ modules:
         destination: /
 
   - type: dnf
+    repos:
+      copr:
+        - atim/starship
     install:
       packages:
         # Window manager & desktop shell
@@ -37,7 +40,6 @@ modules:
         - network-manager-applet
 
         # System utilities
-        - polkit-gnome
         - gnome-disk-utility
 
         # Shell
