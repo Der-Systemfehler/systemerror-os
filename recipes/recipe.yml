@@ -99,6 +99,7 @@ modules:
           - org.kde.krita
           - org.mozilla.thunderbird_esr
           - com.nextcloud.desktopclient.nextcloud
+          - com.obsproject.Studio
       - scope: user
 
   - type: signing
