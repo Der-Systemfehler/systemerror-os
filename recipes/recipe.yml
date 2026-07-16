@@ -90,6 +90,15 @@ modules:
         install:
           - one.ablaze.floorp
           - org.gnome.Loupe
+          - com.ktechpit.whatsie
+          - dev.vencord.Vesktop
+          - io.freetubeapp.FreeTube
+          - md.obsidian.Obsidian
+          - net.ankiweb.Anki
+          - org.blender.Blender
+          - org.kde.krita
+          - org.mozilla.thunderbird_esr
+          - com.nextcloud.desktopclient.nextcloud
       - scope: user
 
   - type: signing
