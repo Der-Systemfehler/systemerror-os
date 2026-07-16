@@ -44,7 +44,6 @@ modules:
 
         # Shell
         - starship
-        - dbus-broker
     remove:
       packages:
         # Core GNOME shell (replaced by niri + noctalia)
@@ -83,9 +82,6 @@ modules:
         - gnome-shell-extension-window-list
         - gnome-shell-extension-places-menu
         - gnome-shell-extension-dash-to-dock
-
-        # Dbus (replaced by dbus-broker)
-        - dbus
 
   - type: default-flatpaks
     configurations:
